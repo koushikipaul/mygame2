@@ -1,5 +1,5 @@
 var gameState = 0;
-
+var canvas;
 
 
 function preload() {
@@ -7,8 +7,10 @@ function preload() {
 }
 
 function setup() {
-	createCanvas(600, 600);
+	canvas = createCanvas(600, 600);
 	player = new Player(100, 580);
+	
+	enemy = new Enemy(100,100);
 
 
 }
@@ -16,6 +18,7 @@ function setup() {
 
 function draw() {
 	background(0);
+	text(mouseX+","+mouseY,mouseX,mouseY)
 	if (gameState == 0) {
 
 	}
@@ -24,14 +27,19 @@ function draw() {
 	}
 	//keyPressed();
 	player.display();
-
-	// if (player.canvaspoint.x = player.x){
-	// 	quad(player.x-5,player.y,player.x+5,player.y,player.canvaspoint.x+25,player.canvaspoint.y,player.canvaspoint.x-25,player.canvaspoint.y);
-	// }
-	// if (player.canvaspoint.y = player.y){
-	// 	quad(player.x,player.y-5,player.x,player.y+5,player.canvaspoint.x,player.canvaspoint.y+25,player.canvaspoint.x,player.canvaspoint.y-25);
-	// }
+	
+	if( frameCount %Math.round(random(40,80 ))=== 0){
+		enemy.createBullet();
+	}
+	drawSprites();
+	
 }
+//  function destroybullet(){
+// 	for(var i =0; i<this.bullet.length;i++){
+// 		this.bullet[i].isTouching(mazeGroup);
+// 		this.bullet[i].destroy();
+// 	}
+// }
 function keyPressed() {
 	if (keyCode === UP_ARROW) {
 
@@ -48,9 +56,9 @@ function keyPressed() {
 		player.y += 10;
 		player.canvaspoint = {
 			x: player.x,
-			y: 600
+			y: canvas.height
 		}
-		console.log(player.canvaspoint+player.x+','+ player.y);
+		
 	}
 	if (keyCode === LEFT_ARROW) {
 		player.x -= 10;
@@ -58,22 +66,22 @@ function keyPressed() {
 			x: 0,
 			y: player.y
 		}
-		console.log(player.canvaspoint)
-		console.log(player.x+','+ player.y);
+		
 		
 	}
 
 if (keyCode === RIGHT_ARROW) {
 	player.x += 10;
 	player.canvaspoint = {
-		x: 600,
+		x: canvas.width,
 		y: player.y
 	}
 }
 }
 function mouseDragged(){
-	player.canvaspoint.x =lerp(player.canvaspoint.x,mouseX,1.5);
-	player.canvaspoint.y =lerp(player.canvaspoint.y,mouseY,1.5);
+	player.canvaspoint={x:mouseX,y: mouseY}
+	// player.canvaspoint=lineExtension(player.canvaspoint.x,player.canvaspoint.y,mouseX,mouseY);
+	//console.log(player.canvaspoint)
 	
 
 
